@@ -1,0 +1,5 @@
+[Database]
+db_name = vendorlist_browser
+db_server = localhost
+db_user = site_user
+db_pass = CHANGEME
