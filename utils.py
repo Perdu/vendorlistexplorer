@@ -39,3 +39,12 @@ def get_vendor_list(vendorlist_id=163):
     with open('vendorlist/vendorlist_%d.json' % int(vendorlist_id)) as json_file:
         vendorlist = json.load(json_file)
         return vendorlist
+
+class Config():
+    def __init__(self, c):
+        self.db_name = c.get('Database', 'db_name')
+        self.db_server = c.get('Database', 'db_server')
+        self.db_user = c.get('Database', 'db_user')
+        self.db_pass = c.get('Database', 'db_pass')
+        self.is_debug_activated = c.get('Other', 'is_debug_activated')
+        self.host = c.get('Other', 'host')

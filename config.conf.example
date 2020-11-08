@@ -3,3 +3,8 @@ db_name = vendorlist_browser
 db_server = localhost
 db_user = site_user
 db_pass = CHANGEME
+
+[Other]
+is_debug_activated = False
+# set to 0.0.0.0 to make the app reachable from the internet
+host = 127.0.0.1

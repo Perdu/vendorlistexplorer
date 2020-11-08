@@ -27,13 +27,6 @@ def start_db():
     return db
 
 ########### CLASSES
-class Config():
-    def __init__(self, c):
-        self.db_name = c.get('Database', 'db_name')
-        self.db_server = c.get('Database', 'db_server')
-        self.db_user = c.get('Database', 'db_user')
-        self.db_pass = c.get('Database', 'db_pass')
-
 class Vendorlist(Base):
     __tablename__ = "vendorlist"
     id = Column(Integer, primary_key=True)

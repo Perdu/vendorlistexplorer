@@ -12,11 +12,12 @@ import html
 
 from flask import Flask, render_template, request, url_for, send_from_directory
 
-from config import *
+from utils import *
 from database import *
 
 app = Flask(__name__)
-#app.debug = is_debug_activated
+config = parse_config_file(CONFIG_FILE)
+app.debug = config.is_debug_activated
 db = None
 
 def disp_graph(rows):
@@ -69,6 +70,6 @@ def after_request(res):
     return res
 
 if __name__ == "__main__":
-    app.run(host=host)
+    app.run(host=config.host)
 
 
