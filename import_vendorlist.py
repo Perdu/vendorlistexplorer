@@ -17,7 +17,7 @@ if __name__ == "__main__":
         print("Usage: python import_vendorlist.py VENDORLIST")
         sys.exit(1)
     vendorlist = import_vendor_list(sys.argv[1])
-    db = start_db()
+    db = start_db_orm()
     vendorlist_id = int(vendorlist["vendorListVersion"])
     vendorlist_t = Vendorlist(vendorlist_id)
     db.add(vendorlist_t)

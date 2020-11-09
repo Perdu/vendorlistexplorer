@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Various stats</title>
+    <link rel=stylesheet type=text/css href="/static/style.css">
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <style>
+      table, th {
+      border: 1px solid black;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function () {
+      $('#container').highcharts({
+          chart: {
+              type: 'column'
+          },
+          title: {
+              text: 'Number of declared purposes'
+          },
+          xAxis: {
+              categories: [
+                  'purpose'
+              ],
+              crosshair: true
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'Number of vendors'
+              }
+          },
+          tooltip: {
+              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                  '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+          },
+          plotOptions: {
+              column: {
+                  pointPadding: 0.2,
+                  borderWidth: 0
+              }
+          },
+          series: [{{ purpose_series|safe }}]
+      });
+      });
+    </script>
+  </head>
+  <body>
+    {# include 'form.html' #}
+    <h1>Used purposes</h1>
+    <script src="/static/highcharts.js"></script>
+    <script src="/static/exporting.js"></script>
+    <div id="container" style="height: 800px;"></div>
+    <br />
+    {# include 'source.html' #}
+  </body>
+</html>

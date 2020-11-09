@@ -10,12 +10,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import LargeBinary
+import MySQLdb as mdb
 
 from utils import *
 
 Base = declarative_base()
 
-def start_db():
+def start_db_orm():
     config = parse_config_file(CONFIG_FILE)
     eng = create_engine('mysql://' + config.db_user + ':' +
                         config.db_pass + '@' + config.db_server +
@@ -25,6 +26,10 @@ def start_db():
     db = Session()
     Base.metadata.create_all(bind=eng)
     return db
+
+def start_db():
+    config = parse_config_file(CONFIG_FILE) # todo: we shouldn't parse file on each request
+    return mdb.connect(config.db_server, config.db_user, config.db_pass, config.db_name)
 
 ########### CLASSES
 class Vendorlist(Base):
