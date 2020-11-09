@@ -64,9 +64,16 @@ def get_purpose_series(vendorlist_id):
     res = res.rstrip(",")
     return res
 
+def get_latest_vendorlist():
+    row = execute("SELECT MAX(id) FROM vendorlist")
+    print(row)
+    return int(row[0])
+
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
-    vendorlist_id = request.args.get('id', '')
+    vendorlist_id = request.args.get('id', None)
+    if vendorlist_id is None:
+        vendorlist_id = get_latest_vendorlist()
     purpose_series = get_purpose_series(vendorlist_id)
     return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series)
 
