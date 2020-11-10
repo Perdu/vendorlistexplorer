@@ -42,6 +42,14 @@ def get_purpose_series(vendorlist_id):
     res = res.rstrip(",")
     return res
 
+def get_vendors(vendorlist_id, consent_purpose_id):
+    res = ""
+    print(vendorlist_id)
+    rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d" % (int(vendorlist_id), int(consent_purpose_id)), return_rows = True)
+    for row in rows:
+        print("%s: %s" % (row[0], row[1]))
+    return None
+
 def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
     return int(row[0])
@@ -53,6 +61,15 @@ def disp_vendorlist():
         vendorlist_id = get_latest_vendorlist()
     purpose_series = get_purpose_series(vendorlist_id)
     return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series)
+
+@app.route('/vendors', methods=['POST', 'GET'])
+def disp_vendors():
+    vendorlist_id = request.args.get('vendorlistid', None)
+    consent_purpose_id = request.args.get('consentpurposeid', None)
+    if vendorlist_id is None:
+        vendorlist_id = get_latest_vendorlist()
+    vendors_details = get_vendors(vendorlist_id, consent_purpose_id)
+    #return render_template("vendors.html", vendors_details=vendors_details)
 
 @app.route('/robots.txt')
 def static_from_root():

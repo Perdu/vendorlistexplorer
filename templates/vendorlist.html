@@ -57,6 +57,16 @@
               var chartData = activePoints[0]['_chart'].config.data;
               var idx = activePoints[0]['_index'];
               console.log(idx + 1);
+              var purpose = idx + 1;
+              $.ajax({
+                  url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose,
+                  type: "GET",
+                  dataType : "html",
+                  success: function(ans) {
+                      answer(ans);
+                  },
+              });
+
           }
       };
     </script>
