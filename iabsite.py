@@ -44,7 +44,6 @@ def get_purpose_series(vendorlist_id):
 
 def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
-    print(row)
     return int(row[0])
 
 @app.route('/vendorlist', methods=['POST', 'GET'])
