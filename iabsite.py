@@ -55,14 +55,13 @@ def purpose_number_to_name(nb):
         return "Develop and improve product"
 
 def get_purpose_series(vendorlist_id):
-    res = "\n{name: 'Consent', data: ["
+    res = ""
     rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose" % int(vendorlist_id), return_rows=True)
     for row in rows:
         count = row[0]
         #purpose = purpose_number_to_name(int(row[1]))
         res = res + "%d," % int(count)
     res = res.rstrip(",")
-    res += "]}"
     return res
 
 def get_latest_vendorlist():
