@@ -17,7 +17,8 @@
     <script src="/static/Chart.js"></script>
     <canvas id="container" style="height: 800px;"></canvas>
     <script type="text/javascript">
-      var ctx = document.getElementById('container').getContext('2d');
+      var canvas = document.getElementById('container');
+      var ctx = canvas.getContext('2d');
       var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -49,6 +50,15 @@
               }
           }
       });
+
+      canvas.onclick = function(evt) {
+          var activePoints = myChart.getElementsAtEvent(evt);
+          if (activePoints[0]) {
+              var chartData = activePoints[0]['_chart'].config.data;
+              var idx = activePoints[0]['_index'];
+              console.log(idx + 1);
+          }
+      };
     </script>
     <br />
     {# include 'source.html' #}
