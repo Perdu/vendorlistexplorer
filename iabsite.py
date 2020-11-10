@@ -32,28 +32,6 @@ def execute(query, parameters = None, return_rowcount = False, return_rows = Fal
     cur.close()
     return res
 
-def purpose_number_to_name(nb):
-    if nb == 1:
-        return "Store and/or access information on a device"
-    elif nb == 2:
-        return "Select basic ads"
-    elif nb == 3:
-        return "Create a personalised ads profile"
-    elif nb == 4:
-        return "Select personalised ads"
-    elif nb == 5:
-        return "Create a personalised content profile"
-    elif nb == 6:
-        return "Select personalised content"
-    elif nb == 7:
-        return "Measure ad performance"
-    elif nb == 8:
-        return "Measure content performance"
-    elif nb == 9:
-        return "Apply market research to generate audience insights"
-    elif nb == 10:
-        return "Develop and improve product"
-
 def get_purpose_series(vendorlist_id):
     res = ""
     rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose" % int(vendorlist_id), return_rows=True)
