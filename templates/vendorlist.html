@@ -13,8 +13,14 @@
   </head>
   <body>
     {# include 'form.html' #}
-    <h1>Used purposes in vendorlist {{ vendorlist_id|safe }}</h1>
     <script src="/static/Chart.js"></script>
+    <form action="" method="get">
+      <select name="id" id="id">
+        {{ select_options|safe }}
+      </select>
+      <input type="submit" value="Display">
+    </form>
+    <h1>Used purposes in vendorlist {{ vendorlist_id|safe }}</h1>
     <canvas id="container" height="100px"></canvas>
     <script type="text/javascript">
       window.chartColors = {

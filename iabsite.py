@@ -64,6 +64,18 @@ def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
     return int(row[0])
 
+def get_select_options(current_vendorlist):
+    res = ""
+    rows = execute("SELECT id FROM vendorlist", return_rows=True)
+    for row in rows:
+        vendorlist_id = int(row[0])
+        if vendorlist_id == current_vendorlist:
+            selected = "selected"
+        else:
+            selected = ""
+        res = res + "<option value=\"%d\" %s>%d</option>\n" % (vendorlist_id, selected, vendorlist_id)
+    return res
+
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
     vendorlist_id = request.args.get('id', None)
@@ -71,7 +83,8 @@ def disp_vendorlist():
         vendorlist_id = get_latest_vendorlist()
     purpose_series = get_purpose_series(vendorlist_id)
     legint_series = get_legint_series(vendorlist_id)
-    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series)
+    select_options = get_select_options(vendorlist_id)
+    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, select_options=select_options)
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():
