@@ -15,7 +15,7 @@
     {# include 'form.html' #}
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }}</h1>
     <script src="/static/Chart.js"></script>
-    <canvas id="container" style="height: 800px;"></canvas>
+    <canvas id="container" height="100px"></canvas>
     <script type="text/javascript">
       var canvas = document.getElementById('container');
       var ctx = canvas.getContext('2d');
@@ -41,6 +41,7 @@
               }]
           },
           options: {
+              responsive: true,
               scales: {
                   yAxes: [{
                       ticks: {
