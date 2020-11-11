@@ -34,18 +34,29 @@
                   'Apply market research to generate audience insights',
                   'Develop and improve product'
               ],
-              datasets: [{
-                  label: 'Consent',
-                  data: [{{ purpose_series|safe }}],
-                  borderWidth: 1
-              }]
+              datasets: [
+                  {
+                      label: 'Consent',
+                      data: [{{ purpose_series|safe }}],
+                      borderWidth: 1
+                  },
+                  {
+                      label: 'Legitimate interest',
+                      data: [{{ legint_series|safe }}],
+                      borderWidth: 1
+                  }
+              ]
           },
           options: {
               responsive: true,
               scales: {
+                  xAxes: [{
+		      stacked: true,
+		  }],
                   yAxes: [{
                       ticks: {
-                          beginAtZero: true
+                          beginAtZero: true,
+                          stacked: true
                       }
                   }]
               }

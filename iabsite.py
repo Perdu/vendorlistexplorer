@@ -33,14 +33,23 @@ def execute(query, parameters = None, return_rowcount = False, return_rows = Fal
     return res
 
 def get_purpose_series(vendorlist_id):
-    res = ""
-    rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose" % int(vendorlist_id), return_rows=True)
+    res_purposes = ""
+    res_legint = ""
+    counts = []
+    rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose ORDER BY purpose" % int(vendorlist_id), return_rows=True)
     for row in rows:
         count = row[0]
-        #purpose = purpose_number_to_name(int(row[1]))
-        res = res + "%d," % int(count)
-    res = res.rstrip(",")
-    return res
+        counts.append(count)
+        res_purposes = res_purposes + "%d," % int(count)
+    res_purposes = res_purposes.rstrip(",")
+    rows = execute("SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id), return_rows=True)
+    i = 0
+    for row in rows:
+        count = row[0]
+        res_legint = res_legint + "%d," % int(count + counts[i]) # we need to add consent numbers because chart.js aren't cumulative
+        i += 1
+    res_legint = res_legint.rstrip(",")
+    return res_purposes, res_legint
 
 def get_vendors(vendorlist_id, consent_purpose_id):
     res = ""
@@ -56,8 +65,8 @@ def disp_vendorlist():
     vendorlist_id = request.args.get('id', None)
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
-    purpose_series = get_purpose_series(vendorlist_id)
-    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series)
+    purpose_series, legint_series = get_purpose_series(vendorlist_id)
+    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series)
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():
