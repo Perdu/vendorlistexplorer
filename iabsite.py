@@ -44,9 +44,14 @@ def get_purpose_series(vendorlist_id):
 def get_legint_series(vendorlist_id):
     res_legint = ""
     rows = execute("SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id), return_rows=True)
+    i = 1
     for row in rows:
+        while row[1] != i: # missing case (ex: purpose 1)
+            res_legint = res_legint + "0,"
+            i += 1
         count = row[0]
         res_legint = res_legint + "%d," % int(count)
+        i += 1
     res_legint = res_legint.rstrip(",")
     return res_legint
 
