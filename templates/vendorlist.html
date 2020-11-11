@@ -64,9 +64,10 @@
                   success: function(ans) {
                       $("#vendors_table").empty();
                       ans.forEach(function(item, index) {
+                          link = encodeURI(item[1]);
                           $("#vendors_table").append($('<tr>')
                                                      .append($('<td>').append(item[0]))
-                                                     .append($('<td>').append(item[1]))
+                                                     .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
                                                     );
                       }
                       );
