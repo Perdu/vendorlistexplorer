@@ -17,6 +17,15 @@
     <script src="/static/Chart.js"></script>
     <canvas id="container" height="100px"></canvas>
     <script type="text/javascript">
+      window.chartColors = {
+	  red: 'rgb(255, 99, 132)',
+	  orange: 'rgb(255, 159, 64)',
+	  yellow: 'rgb(255, 205, 86)',
+	  green: 'rgb(75, 192, 192)',
+	  blue: 'rgb(54, 162, 235)',
+	  purple: 'rgb(153, 102, 255)',
+	  grey: 'rgb(231,233,237)'
+      };
       var canvas = document.getElementById('container');
       var ctx = canvas.getContext('2d');
       var myChart = new Chart(ctx, {
@@ -38,11 +47,13 @@
                   {
                       label: 'Consent',
                       data: [{{ purpose_series|safe }}],
+                      backgroundColor: window.chartColors.blue,
                       borderWidth: 1
                   },
                   {
                       label: 'Legitimate interest',
                       data: [{{ legint_series|safe }}],
+                      backgroundColor: window.chartColors.red,
                       borderWidth: 1
                   }
               ]
@@ -54,12 +65,13 @@
 		      stacked: true,
 		  }],
                   yAxes: [{
-                      ticks: {
-                          beginAtZero: true,
-                          stacked: true
-                      }
+                      stacked: true
                   }]
-              }
+              },
+              tooltips: {
+		  mode: 'index',
+		  intersect: false
+	      },
           }
       });
 
