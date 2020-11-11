@@ -53,14 +53,12 @@
                   {
                       label: 'Consent',
                       data: [{{ purpose_series|safe }}],
-                      backgroundColor: window.chartColors.blue,
-                      borderWidth: 1
+                      backgroundColor: window.chartColors.blue
                   },
                   {
                       label: 'Legitimate interest',
                       data: [{{ legint_series|safe }}],
-                      backgroundColor: window.chartColors.red,
-                      borderWidth: 1
+                      backgroundColor: window.chartColors.red
                   }
               ]
           },
@@ -75,8 +73,8 @@
                   }]
               },
               tooltips: {
-		  mode: 'index',
-		  intersect: false
+		  mode: 'nearest',
+		  intersect: true
 	      },
           }
       });
