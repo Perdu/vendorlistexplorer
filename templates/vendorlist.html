@@ -56,14 +56,20 @@
           if (activePoints[0]) {
               var chartData = activePoints[0]['_chart'].config.data;
               var idx = activePoints[0]['_index'];
-              console.log(idx + 1);
               var purpose = idx + 1;
               $.ajax({
                   url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose,
                   type: "GET",
-                  dataType : "html",
+                  dataType : "json",
                   success: function(ans) {
-                      answer(ans);
+                      $("#vendors_table").empty();
+                      ans.forEach(function(item, index) {
+                          $("#vendors_table").append($('<tr>')
+                                                     .append($('<td>').append(item[0]))
+                                                     .append($('<td>').append(item[1]))
+                                                    );
+                      }
+                      );
                   },
               });
 
@@ -71,6 +77,7 @@
       };
     </script>
     <br />
+    <table id="vendors_table"></table>
     {# include 'source.html' #}
   </body>
 </html>

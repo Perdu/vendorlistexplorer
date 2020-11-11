@@ -10,7 +10,7 @@ import calendar
 import decimal
 import html
 
-from flask import Flask, render_template, request, url_for, send_from_directory
+from flask import Flask, render_template, request, url_for, send_from_directory, Response
 
 from utils import *
 from database import *
@@ -44,11 +44,8 @@ def get_purpose_series(vendorlist_id):
 
 def get_vendors(vendorlist_id, consent_purpose_id):
     res = ""
-    print(vendorlist_id)
-    rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d" % (int(vendorlist_id), int(consent_purpose_id)), return_rows = True)
-    for row in rows:
-        print("%s: %s" % (row[0], row[1]))
-    return None
+    rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(consent_purpose_id)), return_rows = True)
+    return json.dumps(rows)
 
 def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
@@ -69,7 +66,7 @@ def disp_vendors():
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
     vendors_details = get_vendors(vendorlist_id, consent_purpose_id)
-    #return render_template("vendors.html", vendors_details=vendors_details)
+    return Response(vendors_details, mimetype='application/json')
 
 @app.route('/robots.txt')
 def static_from_root():
