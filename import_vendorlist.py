@@ -12,6 +12,12 @@ def import_vendor_list(vendorlist_file):
         vendorlist = json.load(json_file)
         return vendorlist
 
+def vendorlist_exists(db, vendorlist_id):
+    vendorlist = db.query(Vendorlist).filter_by(id=vendorlist_id).scalar()
+    if vendorlist:
+        return True
+    return False
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python import_vendorlist.py VENDORLIST")
@@ -19,6 +25,9 @@ if __name__ == "__main__":
     vendorlist = import_vendor_list(sys.argv[1])
     db = start_db_orm()
     vendorlist_id = int(vendorlist["vendorListVersion"])
+    if vendorlist_exists(db, vendorlist_id):
+        print("Vendorlist already in database. Exiting.")
+        sys.exit(1)
     vendorlist_t = Vendorlist(vendorlist_id)
     db.add(vendorlist_t)
     db.commit()
