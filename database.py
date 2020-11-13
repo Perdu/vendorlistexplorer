@@ -7,7 +7,7 @@ import configparser
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, BigInteger
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import LargeBinary
 import MySQLdb as mdb
@@ -45,7 +45,7 @@ class Vendor(Base):
     vendorlist_id = Column(Integer, ForeignKey("vendorlist.id"), primary_key=True)
     name = Column(String(256))
     url = Column(String(1200)) # max length on IAB's registration form
-    cookieMaxAgeSeconds = Column(Integer)
+    cookieMaxAgeSeconds = Column(BigInteger)
     usesNonCookieAccess = Column(Integer)
     def __init__(self, vendor_id, vendorlist_id):
         self.id = vendor_id
