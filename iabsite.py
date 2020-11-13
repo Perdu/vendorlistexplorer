@@ -84,13 +84,25 @@ def get_select_options(current_vendorlist):
         res = res + "<option value=\"%d\" %s>%d</option>\n" % (vendorlist_id, selected, vendorlist_id)
     return res
 
+def get_int_param(name, max_val=0):
+    try:
+        res = int(request.args.get(name, None))
+        if res < 0:
+            return -1
+        if max_val > 0 and res > max_val:
+            return -1
+        return res
+    except ValueError:
+        return -1
+
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
-    vendorlist_id = get_int_param('id')
+    latest_vendor_list = get_latest_vendorlist()
+    vendorlist_id = get_int_param('id', max_val=latest_vendor_list)
     if vendorlist_id == -1:
         return error()
     if vendorlist_id is None:
-        vendorlist_id = get_latest_vendorlist()
+        vendorlist_id = latest_vendor_list
     purpose_series = get_series(vendorlist_id, "consent")
     legint_series = get_series(vendorlist_id, "legint")
     flexible_series = get_series(vendorlist_id, "flexible_purpose")
