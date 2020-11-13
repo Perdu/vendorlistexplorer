@@ -74,7 +74,7 @@ def get_select_options(current_vendorlist):
     rows = execute("SELECT id FROM vendorlist", return_rows=True)
     for row in rows:
         vendorlist_id = int(row[0])
-        if vendorlist_id == current_vendorlist:
+        if vendorlist_id == int(current_vendorlist):
             selected = "selected"
         else:
             selected = ""
