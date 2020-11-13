@@ -32,28 +32,22 @@ def execute(query, parameters = None, return_rowcount = False, return_rows = Fal
     cur.close()
     return res
 
-def get_purpose_series(vendorlist_id):
-    res_purposes = ""
-    rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose ORDER BY purpose" % int(vendorlist_id), return_rows=True)
-    for row in rows:
-        count = row[0]
-        res_purposes = res_purposes + "%d," % int(count)
-    res_purposes = res_purposes.rstrip(",")
-    return res_purposes
-
-def get_legint_series(vendorlist_id):
-    res_legint = ""
-    rows = execute("SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id), return_rows=True)
+def get_series(vendorlist_id, series_type):
+    res = ""
+    if series_type == "consent":
+        rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose ORDER BY purpose" % int(vendorlist_id), return_rows=True)
+    else:
+        rows = execute("SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id), return_rows=True)
     i = 1
     for row in rows:
         while row[1] != i: # missing case (ex: purpose 1)
-            res_legint = res_legint + "0,"
+            res = res + "0,"
             i += 1
         count = row[0]
-        res_legint = res_legint + "%d," % int(count)
+        res = res + "%d," % int(count)
         i += 1
-    res_legint = res_legint.rstrip(",")
-    return res_legint
+    res = res.rstrip(",")
+    return res
 
 def get_vendors(vendorlist_id, purpose_id, legint=False):
     res = ""
@@ -84,8 +78,8 @@ def disp_vendorlist():
     vendorlist_id = request.args.get('id', None)
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
-    purpose_series = get_purpose_series(vendorlist_id)
-    legint_series = get_legint_series(vendorlist_id)
+    purpose_series = get_series(vendorlist_id, "consent")
+    legint_series = get_series(vendorlist_id, "legint")
     select_options = get_select_options(vendorlist_id)
     return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, select_options=select_options)
 
