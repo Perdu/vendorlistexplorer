@@ -91,7 +91,7 @@
                       type: "GET",
                       dataType : "json",
                       success: function(ans) {
-                          $("#vendors_table").empty();
+                          $("#vendors_table").find("tr:gt(0)").remove(); // empty table except first row
                           ans.forEach(function(item, index) {
                               link = encodeURI(item[1]);
                               cookieMaxAge = encodeURI(item[2]);
@@ -112,7 +112,14 @@
     </script>
     <br />
     Click on bars to display vendors!
-    <table id="vendors_table"></table>
+    <table id="vendors_table">
+      <tr>
+        <td>Name</td>
+        <td>Policy URL</td>
+        <td>Cookie max age (seconds)</td>
+        <td>Uses non-cookie storage</td>
+      </tr>
+    </table>
     {# include 'source.html' #}
   </body>
 </html>
