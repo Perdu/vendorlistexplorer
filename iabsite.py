@@ -69,6 +69,9 @@ def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
     return int(row[0])
 
+def error():
+    return render_template("error.html")
+
 def get_select_options(current_vendorlist):
     res = ""
     rows = execute("SELECT id FROM vendorlist", return_rows=True)
@@ -83,7 +86,9 @@ def get_select_options(current_vendorlist):
 
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
-    vendorlist_id = request.args.get('id', None)
+    vendorlist_id = get_int_param('id')
+    if vendorlist_id == -1:
+        return error()
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
     purpose_series = get_series(vendorlist_id, "consent")
