@@ -35,9 +35,12 @@ def execute(query, parameters = None, return_rowcount = False, return_rows = Fal
 def get_series(vendorlist_id, series_type):
     res = ""
     if series_type == "consent":
-        rows = execute("SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose ORDER BY purpose" % int(vendorlist_id), return_rows=True)
-    else:
-        rows = execute("SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id), return_rows=True)
+        query = "SELECT COUNT(*), purpose FROM vendor_purpose WHERE vendorlist_id = %d GROUP BY purpose ORDER BY purpose" % int(vendorlist_id)
+    elif series_type == "legint":
+        query = "SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id)
+    elif series_type == "flexible_purpose":
+        query = "SELECT COUNT(*), flexible_purpose FROM vendor_flexible_purpose WHERE vendorlist_id = %d GROUP BY flexible_purpose ORDER BY flexible_purpose" % int(vendorlist_id)
+    rows = execute(query, return_rows=True)
     i = 1
     for row in rows:
         while row[1] != i: # missing case (ex: purpose 1)
@@ -80,8 +83,9 @@ def disp_vendorlist():
         vendorlist_id = get_latest_vendorlist()
     purpose_series = get_series(vendorlist_id, "consent")
     legint_series = get_series(vendorlist_id, "legint")
+    flexible_series = get_series(vendorlist_id, "flexible_purpose")
     select_options = get_select_options(vendorlist_id)
-    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, select_options=select_options)
+    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, flexible_series=flexible_series, select_options=select_options)
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():
