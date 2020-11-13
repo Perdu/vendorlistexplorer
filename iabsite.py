@@ -111,9 +111,12 @@ def disp_vendorlist():
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():
-    vendorlist_id = request.args.get('vendorlistid', None)
-    consent_purpose_id = request.args.get('consentpurposeid', None)
-    category = int(request.args.get('categ', None))
+    latest_vendor_list = get_latest_vendorlist()
+    vendorlist_id = get_int_param('vendorlistid', max_val=latest_vendor_list)
+    consent_purpose_id = get_int_param('consentpurposeid', max_val=10)
+    category = get_int_param('categ', max_val=3)
+    if vendorlist_id == -1 or consent_purpose_id == -1 or category == -1:
+        return error()
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
     vendors_details = get_vendors(vendorlist_id, consent_purpose_id, category)
