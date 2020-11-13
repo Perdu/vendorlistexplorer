@@ -40,6 +40,8 @@ def get_series(vendorlist_id, series_type):
         query = "SELECT COUNT(*), legint FROM vendor_legint WHERE vendorlist_id = %d GROUP BY legint ORDER BY legint" % int(vendorlist_id)
     elif series_type == "flexible_purpose":
         query = "SELECT COUNT(*), flexible_purpose FROM vendor_flexible_purpose WHERE vendorlist_id = %d GROUP BY flexible_purpose ORDER BY flexible_purpose" % int(vendorlist_id)
+    elif series_type == "special_purpose":
+        query = "SELECT COUNT(*), special_purpose FROM vendor_special_purpose WHERE vendorlist_id = %d GROUP BY special_purpose ORDER BY special_purpose" % int(vendorlist_id)
     rows = execute(query, return_rows=True)
     i = 1
     for row in rows:
@@ -52,12 +54,15 @@ def get_series(vendorlist_id, series_type):
     res = res.rstrip(",")
     return res
 
-def get_vendors(vendorlist_id, purpose_id, legint=False):
+def get_vendors(vendorlist_id, purpose_id, category):
     res = ""
-    if legint:
-        rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id)), return_rows = True)
-    else:
-        rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id)), return_rows = True)
+    if category == 0:
+        query = "SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+    elif category == 1:
+        query = "SELECT name, url FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+    elif category == 2:
+        query = "SELECT name, url FROM vendor LEFT JOIN vendor_flexible_purpose ON vendor.id=vendor_flexible_purpose.vendor_id AND vendor.vendorlist_id=vendor_flexible_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND flexible_purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+    rows = execute(query, return_rows = True)
     return json.dumps(rows)
 
 def get_latest_vendorlist():
@@ -92,13 +97,9 @@ def disp_vendors():
     vendorlist_id = request.args.get('vendorlistid', None)
     consent_purpose_id = request.args.get('consentpurposeid', None)
     category = int(request.args.get('categ', None))
-    if category == 1:
-        legint = True
-    else:
-        legint = False
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
-    vendors_details = get_vendors(vendorlist_id, consent_purpose_id, legint=legint)
+    vendors_details = get_vendors(vendorlist_id, consent_purpose_id, category)
     return Response(vendors_details, mimetype='application/json')
 
 @app.route('/robots.txt')
