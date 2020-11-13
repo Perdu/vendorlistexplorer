@@ -55,9 +55,12 @@ def get_legint_series(vendorlist_id):
     res_legint = res_legint.rstrip(",")
     return res_legint
 
-def get_vendors(vendorlist_id, consent_purpose_id):
+def get_vendors(vendorlist_id, purpose_id, legint=False):
     res = ""
-    rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(consent_purpose_id)), return_rows = True)
+    if legint:
+        rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id)), return_rows = True)
+    else:
+        rows = execute("SELECT name, url FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id)), return_rows = True)
     return json.dumps(rows)
 
 def get_latest_vendorlist():
@@ -90,9 +93,14 @@ def disp_vendorlist():
 def disp_vendors():
     vendorlist_id = request.args.get('vendorlistid', None)
     consent_purpose_id = request.args.get('consentpurposeid', None)
+    category = int(request.args.get('categ', None))
+    if category == 1:
+        legint = True
+    else:
+        legint = False
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
-    vendors_details = get_vendors(vendorlist_id, consent_purpose_id)
+    vendors_details = get_vendors(vendorlist_id, consent_purpose_id, legint=legint)
     return Response(vendors_details, mimetype='application/json')
 
 @app.route('/robots.txt')

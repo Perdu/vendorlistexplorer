@@ -76,34 +76,30 @@
 		  mode: 'nearest',
 		  intersect: true
 	      },
+              onClick: function(e) {
+                  var bar = this.getElementAtEvent(e)[0];
+                  var index = bar._index;
+                  var datasetIndex = bar._datasetIndex;
+                  var purpose = index + 1;
+                  $.ajax({
+                      url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose + "&categ=" + datasetIndex,
+                      type: "GET",
+                      dataType : "json",
+                      success: function(ans) {
+                          $("#vendors_table").empty();
+                          ans.forEach(function(item, index) {
+                              link = encodeURI(item[1]);
+                              $("#vendors_table").append($('<tr>')
+                                                         .append($('<td>').append(item[0]))
+                                                         .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
+                                                        );
+                          }
+                                     );
+                      },
+                  });
+              }
           }
       });
-
-      canvas.onclick = function(evt) {
-          var activePoints = myChart.getElementsAtEvent(evt);
-          if (activePoints[0]) {
-              var chartData = activePoints[0]['_chart'].config.data;
-              var idx = activePoints[0]['_index'];
-              var purpose = idx + 1;
-              $.ajax({
-                  url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose,
-                  type: "GET",
-                  dataType : "json",
-                  success: function(ans) {
-                      $("#vendors_table").empty();
-                      ans.forEach(function(item, index) {
-                          link = encodeURI(item[1]);
-                          $("#vendors_table").append($('<tr>')
-                                                     .append($('<td>').append(item[0]))
-                                                     .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
-                                                    );
-                      }
-                      );
-                  },
-              });
-
-          }
-      };
     </script>
     <br />
     <table id="vendors_table"></table>
