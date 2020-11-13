@@ -36,6 +36,10 @@ if __name__ == "__main__":
         vendor_t = Vendor((int(vendor["id"])), vendorlist_id)
         vendor_t.name = vendor["name"]
         vendor_t.url = vendor["policyUrl"]
+        if "cookieMaxAgeSeconds" in vendor:
+            vendor_t.cookieMaxAgeSeconds = vendor["cookieMaxAgeSeconds"]
+        if "usesNonCookieAccess" in vendor:
+            vendor_t.usesNonCookieAccess = vendor["usesNonCookieAccess"]
         db.add(vendor_t)
         db.commit()
         for purpose in vendor["purposes"]:
