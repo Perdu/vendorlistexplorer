@@ -94,9 +94,13 @@
                           $("#vendors_table").empty();
                           ans.forEach(function(item, index) {
                               link = encodeURI(item[1]);
+                              cookieMaxAge = encodeURI(item[2]);
+                              usesNonCookieAccess = encodeURI(item[3]);
                               $("#vendors_table").append($('<tr>')
                                                          .append($('<td>').append(item[0]))
                                                          .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
+                                                         .append($('<td>').append(cookieMaxAge))
+                                                         .append($('<td>').append(usesNonCookieAccess))
                                                         );
                           }
                                      );
