@@ -95,7 +95,7 @@
                           ans.forEach(function(item, index) {
                               link = encodeURI(item[1]);
                               cookieMaxAge = encodeURI(item[2]);
-                              usesNonCookieAccess = encodeURI(item[3]);
+                              usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
                               $("#vendors_table").append($('<tr>')
                                                          .append($('<td>').append(item[0]))
                                                          .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
