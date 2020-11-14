@@ -7,8 +7,9 @@ from urllib3.exceptions import MaxRetryError
 import csv
 import subprocess
 import json
+import os
 
-CONFIG_FILE = 'config.conf'
+CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'config.conf')
 
 def import_iab_cmp_list(short_names=False):
     CMP = {}
