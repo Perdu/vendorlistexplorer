@@ -22,6 +22,9 @@ table tr {
     background: #eeee;
     line-height: 30px;
 }
+table tr td {
+    padding: 3px;
+}
 table tr:nth-of-type(2n) {
     background:#ffff !important;
 }
