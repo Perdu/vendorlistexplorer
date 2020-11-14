@@ -16,7 +16,10 @@ table {
     border: 1px solid #5555 !important;
 }
 table tr:first-child {
-    background:#7777;
+    background:#377ba8;
+    color: white;
+    font-weight: bold;
+    text-align: center;
 }
 table tr {
     background: #eeee;
