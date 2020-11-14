@@ -1,5 +1,5 @@
 body {
-    font-family: sans-serif;
+    font:400 16px 'Calibri','Arial';
     background: #eee;
 }
 a, h1, h2 {
@@ -18,4 +18,13 @@ h2 {
 }
 table {
     width: 100%;
+}
+table tr:first-child {
+    background:#7777;
+}
+table tr:hover:not(:first-child) {
+    background:#ffff;
+}
+a {
+    text-decoration: none;
 }
