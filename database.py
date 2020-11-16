@@ -36,8 +36,9 @@ class Vendorlist(Base):
     __tablename__ = "vendorlist"
     id = Column(Integer, primary_key=True)
     lastUpdated = Column(DateTime)
-    def __init__(self, vendorlist_id):
+    def __init__(self, vendorlist_id, lastUpdated):
         self.id = vendorlist_id
+        self.lastUpdated = lastUpdated
 
 class Vendor(Base):
     __tablename__ = "vendor"

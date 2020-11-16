@@ -3,6 +3,7 @@
 
 import sys
 import json
+import datetime
 
 from database import *
 from utils import *
@@ -28,7 +29,8 @@ if __name__ == "__main__":
     if vendorlist_exists(db, vendorlist_id):
         print("Vendorlist already in database. Exiting.")
         sys.exit(1)
-    vendorlist_t = Vendorlist(vendorlist_id)
+    lastUpdated = datetime.datetime.strptime(vendorlist["lastUpdated"], "%Y-%m-%dT%H:%M:%SZ")
+    vendorlist_t = Vendorlist(vendorlist_id, lastUpdated)
     db.add(vendorlist_t)
     db.commit()
     for vendor_id in vendorlist["vendors"]:
