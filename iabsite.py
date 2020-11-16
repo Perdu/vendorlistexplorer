@@ -102,6 +102,7 @@ def get_int_param(name, max_val=0, default_val=-1):
     except ValueError:
         return -1
 
+@app.route('/', methods=['POST', 'GET'])
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
     latest_vendor_list = get_latest_vendorlist()
@@ -133,11 +134,6 @@ def disp_vendors():
 @app.route('/robots.txt')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
-
-@app.route("/")
-def index():
-    vendorlists = Vendorlist.query.all()
-    return render_template("index.html", version=versions)
 
 @app.before_request
 def before_request():
