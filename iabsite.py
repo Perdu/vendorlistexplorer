@@ -84,9 +84,12 @@ def get_select_options(current_vendorlist):
         res = res + "<option value=\"%d\" %s>%d</option>\n" % (vendorlist_id, selected, vendorlist_id)
     return res
 
-def get_int_param(name, max_val=0):
+def get_int_param(name, max_val=0, default_val=-1):
     try:
-        res = int(request.args.get(name, None))
+        res = request.args.get(name, None)
+        if (res is None):
+            return default_val
+        res = int(res)
         if res < 0:
             return -1
         if max_val > 0 and res > max_val:
@@ -98,7 +101,7 @@ def get_int_param(name, max_val=0):
 @app.route('/vendorlist', methods=['POST', 'GET'])
 def disp_vendorlist():
     latest_vendor_list = get_latest_vendorlist()
-    vendorlist_id = get_int_param('id', max_val=latest_vendor_list)
+    vendorlist_id = get_int_param('id', max_val=latest_vendor_list, default_val=latest_vendor_list)
     if vendorlist_id == -1:
         return error()
     if vendorlist_id is None:
