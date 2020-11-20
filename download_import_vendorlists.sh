@@ -15,6 +15,7 @@ function download_and_add() {
     return $res
 }
 
+cd "$(dirname "$0")";
 mkdir -p "vendorlists"
 
 if [ "$#" == "0" ]
