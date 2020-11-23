@@ -57,11 +57,11 @@ def get_series(vendorlist_id, series_type):
 def get_vendors(vendorlist_id, purpose_id, category):
     res = ""
     if category == 0:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
     elif category == 1:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
     elif category == 2:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor LEFT JOIN vendor_flexible_purpose ON vendor.id=vendor_flexible_purpose.vendor_id AND vendor.vendorlist_id=vendor_flexible_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND flexible_purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_flexible_purpose ON vendor.id=vendor_flexible_purpose.vendor_id AND vendor.vendorlist_id=vendor_flexible_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND flexible_purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
     rows = execute(query, return_rows = True)
     return json.dumps(rows)
 

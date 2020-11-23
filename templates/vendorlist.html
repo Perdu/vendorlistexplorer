@@ -96,8 +96,9 @@
                               link = encodeURI(item[1]);
                               cookieMaxAge = encodeURI(item[2]);
                               usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
+                              vendor_link = '<a href="/vendor?id=' + item[4] + '&vendorlistid={{ vendorlist_id }}">' + item[0] + '</a>';
                               $("#vendors_table").append($('<tr>')
-                                                         .append($('<td>').append(item[0]))
+                                                         .append($('<td>').html(vendor_link))
                                                          .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
                                                          .append($('<td>').append(cookieMaxAge))
                                                          .append($('<td>').append(usesNonCookieAccess))
