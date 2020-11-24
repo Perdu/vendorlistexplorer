@@ -65,8 +65,37 @@ def get_vendors(vendorlist_id, purpose_id, category):
     rows = execute(query, return_rows = True)
     return json.dumps(rows)
 
+def add_purpose_to_vendor_dict(vendor, purpose_type, vendorlist_id, vendor_id):
+    query = "SELECT %s FROM vendor_%s WHERE vendorlist_id = %d AND vendor_id = %d" % (purpose_type, purpose_type, int(vendorlist_id), int(vendor_id))
+    rows = execute(query, return_rows = True)
+    vendor[purpose_type] = []
+    for row in rows:
+        vendor[purpose_type].append(row[0])
+
+def get_vendor(vendorlist_id, vendor_id):
+    res = ""
+    vendor = {}
+    query = "SELECT vendor.id, name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor WHERE vendorlist_id = %d AND id = %d ORDER BY name" % (int(vendorlist_id), int(vendor_id))
+    row = execute(query)
+    vendor["id"] = row[0]
+    vendor["name"] = row[1]
+    vendor["url"] = row[2]
+    vendor["cookieMaxAgeSeconds"] = int(row[3])
+    vendor["usesNonCookieAccess"] = int(row[4])
+    add_purpose_to_vendor_dict(vendor, "purpose", vendorlist_id, vendor_id)
+    add_purpose_to_vendor_dict(vendor, "legint", vendorlist_id, vendor_id)
+    add_purpose_to_vendor_dict(vendor, "flexible_purpose", vendorlist_id, vendor_id)
+    add_purpose_to_vendor_dict(vendor, "special_purpose", vendorlist_id, vendor_id)
+    add_purpose_to_vendor_dict(vendor, "feature", vendorlist_id, vendor_id)
+    add_purpose_to_vendor_dict(vendor, "special_feature", vendorlist_id, vendor_id)
+    return json.dumps(vendor)
+
 def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
+    return int(row[0])
+
+def get_max_vendorid():
+    row = execute("SELECT MAX(id) FROM vendor")
     return int(row[0])
 
 def error():
@@ -130,6 +159,15 @@ def disp_vendors():
         vendorlist_id = get_latest_vendorlist()
     vendors_details = get_vendors(vendorlist_id, consent_purpose_id, category)
     return Response(vendors_details, mimetype='application/json')
+
+@app.route('/vendor', methods=['POST', 'GET'])
+def disp_vendor():
+    latest_vendor_list = get_latest_vendorlist()
+    max_vendor_id = get_max_vendorid()
+    vendorlist_id = get_int_param('vendorlistid', max_val=latest_vendor_list)
+    vendor_id = get_int_param('id', max_val=max_vendor_id)
+    vendor_details = get_vendor(vendorlist_id, vendor_id)
+    return Response(vendor_details, mimetype='application/json')
 
 @app.route('/robots.txt')
 def static_from_root():
