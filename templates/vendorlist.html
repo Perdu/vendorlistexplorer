@@ -21,7 +21,7 @@
       </select>
     </form>
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }} ({{ date }})</h1>
-    <canvas id="container" height="100px"></canvas>
+    <canvas id="container" height="150px"></canvas>
     <script type="text/javascript">
       window.chartColors = {
 	  red: 'rgb(255, 99, 132)',
@@ -46,7 +46,7 @@
                   'Select personalised content',
                   'Measure ad performance',
                   'Measure content performance',
-                  ['Apply market research', 'to generate audience insights'],
+                  ['Apply market research to', 'generate audience insights'],
                   'Develop and improve product'
               ],
               datasets: [
@@ -69,8 +69,14 @@
           },
           options: {
               responsive: true,
+              //maintainAspectRatio: false,
               scales: {
                   xAxes: [{
+                      ticks: {
+                          autoSkip: false,
+                          maxRotation: 50,
+                          minRotation: 50
+                      }
 		      //stacked: true,
 		  }],
                   yAxes: [{
@@ -81,6 +87,11 @@
 		  mode: 'nearest',
 		  intersect: true
 	      },
+              layout: {
+                  padding: {
+                      bottom: 15
+                  }
+              },
               onClick: function(e) {
                   var bar = this.getElementAtEvent(e)[0];
                   var index = bar._index;
