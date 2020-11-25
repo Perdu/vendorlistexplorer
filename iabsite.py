@@ -75,13 +75,12 @@ def add_purpose_to_vendor_dict(vendor, purpose_type, vendorlist_id, vendor_id):
 def get_vendor(vendorlist_id, vendor_id):
     res = ""
     vendor = {}
-    query = "SELECT vendor.id, name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor WHERE vendorlist_id = %d AND id = %d ORDER BY name" % (int(vendorlist_id), int(vendor_id))
+    query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess FROM vendor WHERE vendorlist_id = %d AND id = %d ORDER BY name" % (int(vendorlist_id), int(vendor_id))
     row = execute(query)
-    vendor["id"] = row[0]
-    vendor["name"] = row[1]
-    vendor["url"] = row[2]
-    vendor["cookieMaxAgeSeconds"] = int(row[3])
-    vendor["usesNonCookieAccess"] = int(row[4])
+    vendor["name"] = row[0]
+    vendor["url"] = row[1]
+    vendor["cookieMaxAgeSeconds"] = int(row[2])
+    vendor["usesNonCookieAccess"] = int(row[3])
     add_purpose_to_vendor_dict(vendor, "purpose", vendorlist_id, vendor_id)
     add_purpose_to_vendor_dict(vendor, "legint", vendorlist_id, vendor_id)
     add_purpose_to_vendor_dict(vendor, "flexible_purpose", vendorlist_id, vendor_id)
