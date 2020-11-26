@@ -170,7 +170,10 @@
                   link = encodeURI(ans["url"]);
                   cookieMaxAge = encodeURI(ans["cookieMaxAgeSeconds"]);
                   usesNonCookieAccess = ans["usesNonCookieAccess"] == 1 ? 'yes' : 'no';
-                  $("#vendor_div").html("<h2>Vendor information</h2><br />Name: <b>" + name + "</b><br /><br />");
+                  $("#vendor_div").html("<h2>Vendor information</h2><br />Name: <b>" + name + "</b><br />");
+                  $("#vendor_div").append('Privacy policy URL: <a href="' + link + '">' + link + '</a><br />');
+                  $("#vendor_div").append('Cookie max age: ' + cookieMaxAge + ' seconds<br />');
+                  $("#vendor_div").append('Uses non-cookie storage methods: ' + usesNonCookieAccess + '<br />');
                   $("#vendor_div").append("<h3>Purposes used using consent</h3>");
                   ans["purpose"].forEach(function(item, index) {
                       $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
