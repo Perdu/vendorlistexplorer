@@ -107,7 +107,7 @@
                               link = encodeURI(item[1]);
                               cookieMaxAge = encodeURI(item[2]);
                               usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
-                              vendor_link = '<a href="/vendor?id=' + item[4] + '&vendorlistid={{ vendorlist_id }}">' + item[0] + '</a>';
+                              vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
                               $("#vendors_table").append($('<tr>')
                                                          .append($('<td>').html(vendor_link))
                                                          .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
@@ -121,10 +121,87 @@
               }
           }
       });
+      function num_to_purpose(num) {
+          switch(num) {
+              case 1: return "Store and/or access information on a device";
+              case 2: return "Select basic ads";
+              case 3: return "Create a personalised ads prof";
+              case 4: return "Select personalised ads";
+              case 5: return "Create a personalised content";
+              case 6: return "Select personalised content";
+              case 7: return "Measure ad performance";
+              case 8: return "Measure content performance";
+              case 9: return "Apply market research to generate audience insights";
+              case 10: return "Develop and improve products";
+              default: return "";
+          }
+      }
+      function num_to_special_purpose(num) {
+          switch(num) {
+              case 1: return "Ensure security, prevent fraud, and debug";
+              case 2: return "Technically deliver ads or content";
+              default: return "";
+          }
+      }
+      function num_to_feature(num) {
+          switch(num) {
+              case 1: return "Match and combine offline data sources";
+              case 2: return "Link different devices";
+              case 3: return "Receive and use automatically-sent device characteristics for identification";
+              default: return "";
+          }
+      }
+      function num_to_special_feature(num) {
+          switch(num) {
+              case 1: return "Use precise geolocation data";
+              case 2: return "Actively scan device characteristics for identification";
+              default: return "";
+          }
+      }
+      function disp_vendor(vendorid) {
+          $.ajax({
+              url: "vendor?id=" + vendorid + "&vendorlistid={{ vendorlist_id }}",
+              type: "GET",
+              dataType : "json",
+              success: function(ans) {
+                  console.log(ans);
+                  $("#vendor_div").empty(); // empty table except first row
+                  name = ans["name"];
+                  link = encodeURI(ans["url"]);
+                  cookieMaxAge = encodeURI(ans["cookieMaxAgeSeconds"]);
+                  usesNonCookieAccess = ans["usesNonCookieAccess"] == 1 ? 'yes' : 'no';
+                  $("#vendor_div").html("<h2>Vendor information</h2><br />Name: <b>" + name + "</b><br /><br />");
+                  $("#vendor_div").append("<h3>Purposes used using consent</h3>");
+                  ans["purpose"].forEach(function(item, index) {
+                      $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
+                  });
+                  $("#vendor_div").append("<h3>Purposes used using legitimate interests</h3>");
+                  ans["legint"].forEach(function(item, index) {
+                      $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
+                  });
+                  $("#vendor_div").append('<h3>"Flexible" purposes (publishers can choose the legal basis)</h3>');
+                  ans["flexible_purpose"].forEach(function(item, index) {
+                      $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
+                  });
+                  $("#vendor_div").append("<h3>Other (consent is not used)</h3>");
+                  ans["special_purpose"].forEach(function(item, index) {
+                      $("#vendor_div").append("Special purpose " + item + ": " + num_to_special_purpose(item) + "<br />");
+                  });
+                  ans["feature"].forEach(function(item, index) {
+                      $("#vendor_div").append("Feature " + item + ": " + num_to_feature(item) + "<br />");
+                  });
+                  ans["special_feature"].forEach(function(item, index) {
+                      $("#vendor_div").append("Special feature " + item + ": " + num_to_special_feature(item) + "<br />");
+                  });
+              }
+          });
+      }
     </script>
     <br />
     Click on bars to display vendors!<br />
     This website get automatically updated with latest vendorlists.
+    <div id="vendor_div">
+    </div>
     <table id="vendors_table">
       <tr>
         <td>Name</td>

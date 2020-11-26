@@ -43,7 +43,11 @@ table tr:nth-of-type(2n) {
 a {
     text-decoration: none;
 }
-
+#vendor_div {
+    border: 1px solid #5555 !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 @media only screen and (max-width: 575px) {
     table tr {
         line-height: 20px;
