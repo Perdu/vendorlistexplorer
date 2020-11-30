@@ -127,6 +127,10 @@ def get_date(vendorlist_id):
     row = execute("SELECT lastUpdated FROM vendorlist WHERE id = %d" % vendorlist_id)
     return row[0].strftime("%Y-%m-%d")
 
+def get_nb_vendors(vendorlist_id):
+    row = execute("SELECT COUNT(id) FROM vendor WHERE vendorlist_id = %d" % vendorlist_id)
+    return row[0]
+
 def get_int_param(name, max_val=0, default_val=-1):
     try:
         res = request.args.get(name, None)
@@ -157,8 +161,9 @@ def disp_vendorlist():
     feature_series = get_series(vendorlist_id, "feature")
     special_feature_series = get_series(vendorlist_id, "special_feature")
     select_options = get_select_options(vendorlist_id)
+    nb_vendors = get_nb_vendors(vendorlist_id)
     date = get_date(vendorlist_id)
-    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, flexible_series=flexible_series, special_purpose_series=special_purpose_series, feature_series=feature_series, special_feature_series=special_feature_series, select_options=select_options, date=date)
+    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, flexible_series=flexible_series, special_purpose_series=special_purpose_series, feature_series=feature_series, special_feature_series=special_feature_series, select_options=select_options, date=date, nb_vendors=nb_vendors)
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():

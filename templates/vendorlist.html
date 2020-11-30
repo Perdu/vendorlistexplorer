@@ -86,8 +86,15 @@
 		      //stacked: true,
 		  }],
                   yAxes: [{
-                      //stacked: true
-                  }]
+                      ticks: {
+                          min: 0,
+                          max: {{ nb_vendors }}
+                      },
+                      afterTickToLabelConversion: function(scaleInstance) {
+                          scaleInstance.ticks[0] = null;
+                          scaleInstance.ticksAsNumbers[0] = null;
+                      }
+		  }]
               },
               tooltips: {
 		  mode: 'nearest',
@@ -130,6 +137,16 @@
                           autoSkip: false,
                           maxRotation: 50,
                           minRotation: 50
+                      }
+		  }],
+                  yAxes: [{
+                      ticks: {
+                          min: 0,
+                          max: {{ nb_vendors }}
+                      },
+                      afterTickToLabelConversion: function(scaleInstance) {
+                          scaleInstance.ticks[0] = null;
+                          scaleInstance.ticksAsNumbers[0] = null;
                       }
 		  }]
               },
@@ -174,6 +191,16 @@
                           maxRotation: 50,
                           minRotation: 50
                       }
+		  }],
+                  yAxes: [{
+                      ticks: {
+                          min: 0,
+                          max: {{ nb_vendors }}
+                      },
+                      afterTickToLabelConversion: function(scaleInstance) {
+                          scaleInstance.ticks[0] = null;
+                          scaleInstance.ticksAsNumbers[0] = null;
+                      }
 		  }]
               },
               tooltips: {
@@ -216,6 +243,16 @@
                           autoSkip: false,
                           maxRotation: 50,
                           minRotation: 50
+                      }
+		  }],
+                  yAxes: [{
+                      ticks: {
+                          min: 0,
+                          max: {{ nb_vendors }}
+                      },
+                      afterTickToLabelConversion: function(scaleInstance) {
+                          scaleInstance.ticks[0] = null;
+                          scaleInstance.ticksAsNumbers[0] = null;
                       }
 		  }]
               },
