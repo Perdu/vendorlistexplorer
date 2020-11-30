@@ -94,31 +94,7 @@
                   }
               },
               onClick: function(e) {
-                  var bar = this.getElementAtEvent(e)[0];
-                  var index = bar._index;
-                  var datasetIndex = bar._datasetIndex;
-                  var purpose = index + 1;
-                  $.ajax({
-                      url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose + "&categ=" + datasetIndex,
-                      type: "GET",
-                      dataType : "json",
-                      success: function(ans) {
-                          $("#vendors_table").find("tr:gt(0)").remove(); // empty table except first row
-                          ans.forEach(function(item, index) {
-                              link = encodeURI(item[1]);
-                              cookieMaxAge = encodeURI(item[2]);
-                              usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
-                              vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
-                              $("#vendors_table").append($('<tr>')
-                                                         .append($('<td>').html(vendor_link))
-                                                         .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
-                                                         .append($('<td>').append(cookieMaxAge))
-                                                         .append($('<td>').append(usesNonCookieAccess))
-                                                        );
-                          }
-                                     );
-                      },
-                  });
+                  fetch_vendors(e, this, "consentpurposeid");
               }
           }
       });
@@ -164,11 +140,7 @@
                           maxRotation: 50,
                           minRotation: 50
                       }
-		      //stacked: true,
-		  }],
-                  yAxes: [{
-                      //stacked: true
-                  }]
+		  }]
               },
               tooltips: {
 		  mode: 'nearest',
@@ -180,34 +152,37 @@
                   }
               },
               onClick: function(e) {
-                  var bar = this.getElementAtEvent(e)[0];
-                  var index = bar._index;
-                  var datasetIndex = bar._datasetIndex;
-                  var purpose = index + 1;
-                  $.ajax({
-                      url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose + "&categ=" + datasetIndex,
-                      type: "GET",
-                      dataType : "json",
-                      success: function(ans) {
-                          $("#vendors_table").find("tr:gt(0)").remove(); // empty table except first row
-                          ans.forEach(function(item, index) {
-                              link = encodeURI(item[1]);
-                              cookieMaxAge = encodeURI(item[2]);
-                              usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
-                              vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
-                              $("#vendors_table").append($('<tr>')
-                                                         .append($('<td>').html(vendor_link))
-                                                         .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
-                                                         .append($('<td>').append(cookieMaxAge))
-                                                         .append($('<td>').append(usesNonCookieAccess))
-                                                        );
-                          }
-                                     );
-                      },
-                  });
+                  fetch_vendors(e, this, "consentpurposeid");
               }
           }
       });
+      function fetch_vendors(e, graph, category) {
+          var bar = graph.getElementAtEvent(e)[0];
+          var index = bar._index;
+          var datasetIndex = bar._datasetIndex;
+          var purpose = index + 1;
+          $.ajax({
+              url: "vendors?vendorlistid={{ vendorlist_id }}&" + category + "=" + purpose + "&categ=" + datasetIndex,
+              type: "GET",
+              dataType : "json",
+              success: function(ans) {
+                  $("#vendors_table").find("tr:gt(0)").remove(); // empty table except first row
+                  ans.forEach(function(item, index) {
+                      link = encodeURI(item[1]);
+                      cookieMaxAge = encodeURI(item[2]);
+                      usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
+                      vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
+                      $("#vendors_table").append($('<tr>')
+                                                 .append($('<td>').html(vendor_link))
+                                                 .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
+                                                 .append($('<td>').append(cookieMaxAge))
+                                                 .append($('<td>').append(usesNonCookieAccess))
+                                                );
+                  }
+                             );
+              },
+          });
+      }
       function num_to_purpose(num) {
           switch(num) {
               case 1: return "Store and/or access information on a device";
