@@ -58,14 +58,21 @@ def get_series(vendorlist_id, series_type):
     res = res.rstrip(",")
     return res
 
-def get_vendors(vendorlist_id, purpose_id, category):
+def get_vendors(vendorlist_id, category, purpose_id, feature_id, special_feature_id, special_purpose_id):
     res = ""
-    if category == 0:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
-    elif category == 1:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
-    elif category == 2:
-        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_flexible_purpose ON vendor.id=vendor_flexible_purpose.vendor_id AND vendor.vendorlist_id=vendor_flexible_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND flexible_purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+    if purpose_id != -1:
+        if category == 0:
+            query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_purpose ON vendor.id=vendor_purpose.vendor_id AND vendor.vendorlist_id=vendor_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+        elif category == 1:
+            query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_legint ON vendor.id=vendor_legint.vendor_id AND vendor.vendorlist_id=vendor_legint.vendorlist_id WHERE vendor.vendorlist_id = %d AND legint = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+        elif category == 2:
+            query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_flexible_purpose ON vendor.id=vendor_flexible_purpose.vendor_id AND vendor.vendorlist_id=vendor_flexible_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND flexible_purpose = %d ORDER BY name" % (int(vendorlist_id), int(purpose_id))
+    elif feature_id != -1:
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_feature ON vendor.id=vendor_feature.vendor_id AND vendor.vendorlist_id=vendor_feature.vendorlist_id WHERE vendor.vendorlist_id = %d AND feature = %d ORDER BY name" % (int(vendorlist_id), int(feature_id))
+    elif special_feature_id != -1:
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_special_feature ON vendor.id=vendor_special_feature.vendor_id AND vendor.vendorlist_id=vendor_special_feature.vendorlist_id WHERE vendor.vendorlist_id = %d AND special_feature = %d ORDER BY name" % (int(vendorlist_id), int(special_feature_id))
+    else:
+        query = "SELECT name, url, cookieMaxAgeSeconds, usesNonCookieAccess, vendor.id FROM vendor LEFT JOIN vendor_special_purpose ON vendor.id=vendor_special_purpose.vendor_id AND vendor.vendorlist_id=vendor_special_purpose.vendorlist_id WHERE vendor.vendorlist_id = %d AND special_purpose = %d ORDER BY name" % (int(vendorlist_id), int(special_purpose_id))
     rows = execute(query, return_rows = True)
     return json.dumps(rows)
 
@@ -158,12 +165,17 @@ def disp_vendors():
     latest_vendor_list = get_latest_vendorlist()
     vendorlist_id = get_int_param('vendorlistid', max_val=latest_vendor_list)
     consent_purpose_id = get_int_param('consentpurposeid', max_val=10)
+    feature_id = get_int_param('featureid', max_val=3)
+    special_feature_id = get_int_param('specialfeatureid', max_val=3)
+    special_purpose_id = get_int_param('specialpurposeid', max_val=3)
     category = get_int_param('categ', max_val=3)
-    if vendorlist_id == -1 or consent_purpose_id == -1 or category == -1:
+    if consent_purpose_id == -1 and feature_id == -1 and special_feature_id == -1 and special_purpose_id == -1:
+        return error()
+    if vendorlist_id == -1 or category == -1:
         return error()
     if vendorlist_id is None:
         vendorlist_id = get_latest_vendorlist()
-    vendors_details = get_vendors(vendorlist_id, consent_purpose_id, category)
+    vendors_details = get_vendors(vendorlist_id, category, consent_purpose_id, feature_id, special_feature_id, special_purpose_id)
     return Response(vendors_details, mimetype='application/json')
 
 @app.route('/vendor', methods=['POST', 'GET'])

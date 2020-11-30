@@ -23,6 +23,8 @@
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }} ({{ date }})</h1>
     <canvas id="container" height="150px"></canvas>
     <canvas id="container2" height="100px"></canvas>
+    <canvas id="container3" height="100px"></canvas>
+    <canvas id="container4" height="100px"></canvas>
     <script type="text/javascript">
       window.chartColors = {
 	  red: 'rgb(255, 99, 132)',
@@ -104,25 +106,54 @@
           type: 'bar',
           data: {
               labels: [
-                  "Ensure security, prevent fraud, and debug",
-                  "Technically deliver ads or content",
                   "Match and combine offline data sources",
                   "Link different devices",
-                  "Receive and use automatically-sent device characteristics for identification",
-                  "Use precise geolocation data",
-                  "Actively scan device characteristics for identification",
+                  "Receive and use automatically-sent device characteristics for identification"
               ],
               datasets: [
-                  {
-                      label: 'Special purposes',
-                      data: [{{ special_purpose_series|safe }}],
-                      backgroundColor: window.chartColors.blue,
-                  },
                   {
                       label: 'Features',
                       data: [{{ feature_series|safe }}],
                       backgroundColor: window.chartColors.red
-                  },
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              //maintainAspectRatio: false,
+              scales: {
+                  xAxes: [{
+                      ticks: {
+                          autoSkip: false,
+                          maxRotation: 50,
+                          minRotation: 50
+                      }
+		  }]
+              },
+              tooltips: {
+		  mode: 'nearest',
+		  intersect: true
+	      },
+              layout: {
+                  padding: {
+                      bottom: 15
+                  }
+              },
+              onClick: function(e) {
+                  fetch_vendors(e, this, "featureid");
+              }
+          }
+      });
+      var canvas3 = document.getElementById('container3');
+      var ctx3 = canvas3.getContext('2d');
+      var myChart3 = new Chart(ctx3, {
+          type: 'bar',
+          data: {
+              labels: [
+                  "Use precise geolocation data",
+                  "Actively scan device characteristics for identification"
+              ],
+              datasets: [
                   {
                       label: 'Special features',
                       data: [{{ special_feature_series|safe }}],
@@ -152,10 +183,54 @@
                   }
               },
               onClick: function(e) {
-                  fetch_vendors(e, this, "consentpurposeid");
+                  fetch_vendors(e, this, "specialfeatureid");
               }
           }
       });
+      var canvas4 = document.getElementById('container4');
+      var ctx4 = canvas4.getContext('2d');
+      var myChart4 = new Chart(ctx4, {
+          type: 'bar',
+          data: {
+              labels: [
+                  "Ensure security, prevent fraud, and debug",
+                  "Technically deliver ads or content"
+              ],
+              datasets: [
+                  {
+                      label: 'Special purposes',
+                      data: [{{ special_purpose_series|safe }}],
+                      backgroundColor: window.chartColors.blue,
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              //maintainAspectRatio: false,
+              scales: {
+                  xAxes: [{
+                      ticks: {
+                          autoSkip: false,
+                          maxRotation: 50,
+                          minRotation: 50
+                      }
+		  }]
+              },
+              tooltips: {
+		  mode: 'nearest',
+		  intersect: true
+	      },
+              layout: {
+                  padding: {
+                      bottom: 15
+                  }
+              },
+              onClick: function(e) {
+                  fetch_vendors(e, this, "specialpurposeid");
+              }
+          }
+      });
+
       function fetch_vendors(e, graph, category) {
           var bar = graph.getElementAtEvent(e)[0];
           var index = bar._index;
