@@ -22,6 +22,7 @@
     </form>
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }} ({{ date }})</h1>
     <canvas id="container" height="150px"></canvas>
+    <canvas id="container2" height="100px"></canvas>
     <script type="text/javascript">
       window.chartColors = {
 	  red: 'rgb(255, 99, 132)',
@@ -63,6 +64,92 @@
                   {
                       label: 'Flexible purpose',
                       data: [{{ flexible_series|safe }}],
+                      backgroundColor: window.chartColors.green
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              //maintainAspectRatio: false,
+              scales: {
+                  xAxes: [{
+                      ticks: {
+                          autoSkip: false,
+                          maxRotation: 50,
+                          minRotation: 50
+                      }
+		      //stacked: true,
+		  }],
+                  yAxes: [{
+                      //stacked: true
+                  }]
+              },
+              tooltips: {
+		  mode: 'nearest',
+		  intersect: true
+	      },
+              layout: {
+                  padding: {
+                      bottom: 15
+                  }
+              },
+              onClick: function(e) {
+                  var bar = this.getElementAtEvent(e)[0];
+                  var index = bar._index;
+                  var datasetIndex = bar._datasetIndex;
+                  var purpose = index + 1;
+                  $.ajax({
+                      url: "vendors?vendorlistid={{ vendorlist_id }}&consentpurposeid=" + purpose + "&categ=" + datasetIndex,
+                      type: "GET",
+                      dataType : "json",
+                      success: function(ans) {
+                          $("#vendors_table").find("tr:gt(0)").remove(); // empty table except first row
+                          ans.forEach(function(item, index) {
+                              link = encodeURI(item[1]);
+                              cookieMaxAge = encodeURI(item[2]);
+                              usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
+                              vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
+                              $("#vendors_table").append($('<tr>')
+                                                         .append($('<td>').html(vendor_link))
+                                                         .append($('<td>').html('<a href="' + link + '">' + link + '</a>'))
+                                                         .append($('<td>').append(cookieMaxAge))
+                                                         .append($('<td>').append(usesNonCookieAccess))
+                                                        );
+                          }
+                                     );
+                      },
+                  });
+              }
+          }
+      });
+      var canvas2 = document.getElementById('container2');
+      var ctx2 = canvas2.getContext('2d');
+      var myChart2 = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+              labels: [
+                  "Ensure security, prevent fraud, and debug",
+                  "Technically deliver ads or content",
+                  "Match and combine offline data sources",
+                  "Link different devices",
+                  "Receive and use automatically-sent device characteristics for identification",
+                  "Use precise geolocation data",
+                  "Actively scan device characteristics for identification",
+              ],
+              datasets: [
+                  {
+                      label: 'Special purposes',
+                      data: [{{ special_purpose_series|safe }}],
+                      backgroundColor: window.chartColors.blue,
+                  },
+                  {
+                      label: 'Features',
+                      data: [{{ feature_series|safe }}],
+                      backgroundColor: window.chartColors.red
+                  },
+                  {
+                      label: 'Special features',
+                      data: [{{ special_feature_series|safe }}],
                       backgroundColor: window.chartColors.green
                   }
               ]

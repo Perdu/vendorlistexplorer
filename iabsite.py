@@ -42,6 +42,10 @@ def get_series(vendorlist_id, series_type):
         query = "SELECT COUNT(*), flexible_purpose FROM vendor_flexible_purpose WHERE vendorlist_id = %d GROUP BY flexible_purpose ORDER BY flexible_purpose" % int(vendorlist_id)
     elif series_type == "special_purpose":
         query = "SELECT COUNT(*), special_purpose FROM vendor_special_purpose WHERE vendorlist_id = %d GROUP BY special_purpose ORDER BY special_purpose" % int(vendorlist_id)
+    elif series_type == "feature":
+        query = "SELECT COUNT(*), feature FROM vendor_feature WHERE vendorlist_id = %d GROUP BY feature ORDER BY feature" % int(vendorlist_id)
+    elif series_type == "special_feature":
+        query = "SELECT COUNT(*), special_feature FROM vendor_special_feature WHERE vendorlist_id = %d GROUP BY special_feature ORDER BY special_feature" % int(vendorlist_id)
     rows = execute(query, return_rows=True)
     i = 1
     for row in rows:
@@ -142,9 +146,12 @@ def disp_vendorlist():
     purpose_series = get_series(vendorlist_id, "consent")
     legint_series = get_series(vendorlist_id, "legint")
     flexible_series = get_series(vendorlist_id, "flexible_purpose")
+    special_purpose_series = get_series(vendorlist_id, "special_purpose")
+    feature_series = get_series(vendorlist_id, "feature")
+    special_feature_series = get_series(vendorlist_id, "special_feature")
     select_options = get_select_options(vendorlist_id)
     date = get_date(vendorlist_id)
-    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, flexible_series=flexible_series, select_options=select_options, date=date)
+    return render_template("vendorlist.html", vendorlist_id=vendorlist_id, purpose_series=purpose_series, legint_series=legint_series, flexible_series=flexible_series, special_purpose_series=special_purpose_series, feature_series=feature_series, special_feature_series=special_feature_series, select_options=select_options, date=date)
 
 @app.route('/vendors', methods=['POST', 'GET'])
 def disp_vendors():
