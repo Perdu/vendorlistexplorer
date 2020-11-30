@@ -48,6 +48,12 @@ a {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+#other_containers {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
 @media only screen and (max-width: 575px) {
     table tr {
         line-height: 20px;

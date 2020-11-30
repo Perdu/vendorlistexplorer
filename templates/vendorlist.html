@@ -22,9 +22,12 @@
     </form>
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }} ({{ date }})</h1>
     <canvas id="container" height="150px"></canvas>
-    <canvas id="container2" height="100px"></canvas>
-    <canvas id="container3" height="100px"></canvas>
-    <canvas id="container4" height="100px"></canvas>
+    <div id="other_containers">
+      <canvas id="container2" width="600px"></canvas>
+      <canvas id="container3" width="600px"></canvas>
+      <canvas id="container4" width="600px"></canvas>
+    </div>
+    <div style="clear: both;"></div>
     <script type="text/javascript">
       window.chartColors = {
 	  red: 'rgb(255, 99, 132)',
@@ -106,9 +109,9 @@
           type: 'bar',
           data: {
               labels: [
-                  "Match and combine offline data sources",
+                  ["Match and combine", "offline data sources"],
                   "Link different devices",
-                  "Receive and use automatically-sent device characteristics for identification"
+                  ["Receive and use", "automatically-sent", "device characteristics", "for identification"]
               ],
               datasets: [
                   {
@@ -119,7 +122,7 @@
               ]
           },
           options: {
-              responsive: true,
+              responsive: false,
               //maintainAspectRatio: false,
               scales: {
                   xAxes: [{
@@ -151,7 +154,7 @@
           data: {
               labels: [
                   "Use precise geolocation data",
-                  "Actively scan device characteristics for identification"
+                  ["Actively scan", "device characteristics", "for identification"]
               ],
               datasets: [
                   {
@@ -162,7 +165,7 @@
               ]
           },
           options: {
-              responsive: true,
+              responsive: false,
               //maintainAspectRatio: false,
               scales: {
                   xAxes: [{
@@ -193,8 +196,8 @@
           type: 'bar',
           data: {
               labels: [
-                  "Ensure security, prevent fraud, and debug",
-                  "Technically deliver ads or content"
+                  ["Ensure security, prevent", "fraud, and debug"],
+                  ["Technically deliver", "ads or content"]
               ],
               datasets: [
                   {
@@ -205,7 +208,7 @@
               ]
           },
           options: {
-              responsive: true,
+              responsive: false,
               //maintainAspectRatio: false,
               scales: {
                   xAxes: [{
