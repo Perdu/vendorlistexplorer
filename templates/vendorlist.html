@@ -343,6 +343,7 @@
               dataType : "json",
               success: function(ans) {
                   $("#vendor_div").empty(); // empty table except first row
+                  $("#vendor_div").show();
                   name = ans["name"];
                   link = encodeURI(ans["url"]);
                   cookieMaxAge = encodeURI(ans["cookieMaxAgeSeconds"]);
