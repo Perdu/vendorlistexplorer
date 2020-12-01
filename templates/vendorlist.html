@@ -350,19 +350,27 @@
                   $("#vendor_div").append('Privacy policy URL: <a href="' + link + '">' + link + '</a><br />');
                   $("#vendor_div").append('Cookie max age: ' + cookieMaxAge + ' seconds<br />');
                   $("#vendor_div").append('Uses non-cookie storage methods: ' + usesNonCookieAccess + '<br />');
-                  $("#vendor_div").append("<h3>Purposes used using consent</h3>");
+                  if (ans["purpose"].length > 0) {
+                      $("#vendor_div").append("<h3>Purposes used using consent</h3>");
+                  }
                   ans["purpose"].forEach(function(item, index) {
                       $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
                   });
-                  $("#vendor_div").append("<h3>Purposes used using legitimate interests</h3>");
+                  if (ans["legint"].length > 0) {
+                      $("#vendor_div").append("<h3>Purposes used using legitimate interests</h3>");
+                  }
                   ans["legint"].forEach(function(item, index) {
                       $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
                   });
-                  $("#vendor_div").append('<h3>"Flexible" purposes (publishers can choose the legal basis)</h3>');
+                  if (ans["flexible_purpose"].length > 0) {
+                      $("#vendor_div").append('<h3>"Flexible" purposes (publishers can choose the legal basis)</h3>');
+                  }
                   ans["flexible_purpose"].forEach(function(item, index) {
                       $("#vendor_div").append("Purpose " + item + " : " + num_to_purpose(item) + "<br />");
                   });
-                  $("#vendor_div").append("<h3>Other (consent is not used)</h3>");
+                  if (ans["special_purpose"].length + ans["feature"].length + ans["special_feature"].length > 0) {
+                      $("#vendor_div").append("<h3>Other (consent is not used)</h3>");
+                  }
                   ans["special_purpose"].forEach(function(item, index) {
                       $("#vendor_div").append("Special purpose " + item + ": " + num_to_special_purpose(item) + "<br />");
                   });
