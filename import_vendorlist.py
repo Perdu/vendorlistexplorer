@@ -4,6 +4,7 @@
 import sys
 import json
 import datetime
+import html
 
 from database import *
 from utils import *
@@ -36,31 +37,31 @@ if __name__ == "__main__":
     for vendor_id in vendorlist["vendors"]:
         vendor = vendorlist["vendors"][vendor_id]
         vendor_t = Vendor((int(vendor["id"])), vendorlist_id)
-        vendor_t.name = vendor["name"]
-        vendor_t.url = vendor["policyUrl"]
+        vendor_t.name = html.escape(vendor["name"])
+        vendor_t.url = html.escape(vendor["policyUrl"])
         if "cookieMaxAgeSeconds" in vendor:
-            vendor_t.cookieMaxAgeSeconds = vendor["cookieMaxAgeSeconds"]
+            vendor_t.cookieMaxAgeSeconds = int(vendor["cookieMaxAgeSeconds"])
         if "usesNonCookieAccess" in vendor:
-            vendor_t.usesNonCookieAccess = vendor["usesNonCookieAccess"]
+            vendor_t.usesNonCookieAccess = int(vendor["usesNonCookieAccess"])
         db.add(vendor_t)
         db.commit()
         for purpose in vendor["purposes"]:
-            purpose_t = Vendor_purpose(vendor_id, vendorlist_id, purpose)
+            purpose_t = Vendor_purpose(vendor_id, vendorlist_id, int(purpose))
             db.add(purpose_t)
         for legint in vendor["legIntPurposes"]:
-            purpose_t = Vendor_legint(vendor_id, vendorlist_id, legint)
+            purpose_t = Vendor_legint(vendor_id, vendorlist_id, int(legint))
             db.add(purpose_t)
         for flexible_purpose in vendor["flexiblePurposes"]:
-            purpose_t = Vendor_flexible_purpose(vendor_id, vendorlist_id, flexible_purpose)
+            purpose_t = Vendor_flexible_purpose(vendor_id, vendorlist_id, int(flexible_purpose))
             db.add(purpose_t)
         for special_purpose in vendor["specialPurposes"]:
-            purpose_t = Vendor_special_purpose(vendor_id, vendorlist_id, special_purpose)
+            purpose_t = Vendor_special_purpose(vendor_id, vendorlist_id, int(special_purpose))
             db.add(purpose_t)
         for feature in vendor["features"]:
-            purpose_t = Vendor_feature(vendor_id, vendorlist_id, feature)
+            purpose_t = Vendor_feature(vendor_id, vendorlist_id, int(feature))
             db.add(purpose_t)
         for special_feature in vendor["specialFeatures"]:
-            purpose_t = Vendor_special_feature(vendor_id, vendorlist_id, special_feature)
+            purpose_t = Vendor_special_feature(vendor_id, vendorlist_id, int(special_feature))
             db.add(purpose_t)
         db.commit()
     db.commit()
