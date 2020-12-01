@@ -47,6 +47,8 @@ a {
     border: 1px solid #5555 !important;
     margin-top: 5px;
     margin-bottom: 5px;
+    padding: 5px;
+    background: #1111;
 }
 #other_containers {
     display: flex;
