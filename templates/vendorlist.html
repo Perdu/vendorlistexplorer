@@ -341,7 +341,6 @@
               type: "GET",
               dataType : "json",
               success: function(ans) {
-                  console.log(ans);
                   $("#vendor_div").empty(); // empty table except first row
                   name = ans["name"];
                   link = encodeURI(ans["url"]);
