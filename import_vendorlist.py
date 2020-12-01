@@ -37,7 +37,7 @@ if __name__ == "__main__":
     for vendor_id in vendorlist["vendors"]:
         vendor = vendorlist["vendors"][vendor_id]
         vendor_t = Vendor((int(vendor["id"])), vendorlist_id)
-        vendor_t.name = html.escape(vendor["name"])
+        vendor_t.name = html.escape(vendor["name"].replace('&amp;', '&').replace('&#43;', '+')) # only allow '&' and '+' replacements, escape the rest
         vendor_t.url = html.escape(vendor["policyUrl"])
         if "cookieMaxAgeSeconds" in vendor:
             vendor_t.cookieMaxAgeSeconds = int(vendor["cookieMaxAgeSeconds"])
