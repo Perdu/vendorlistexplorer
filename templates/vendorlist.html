@@ -21,6 +21,19 @@
       </select>
     </form>
     <h1>Used purposes in vendorlist {{ vendorlist_id|safe }} ({{ date }})</h1>
+    <div id="intro">
+    <p>
+      This website extracts information from the vendorlist of IAB Europe Transparency &amp; Consent Framework and makes this information human-readable. The goal is to provide Data Protection Agencies, privacy researchers and activists a tool to easily get statistics on purpose declarations by advertisers and their legal basis, and obtain lists of vendor in potentiel violation of the GDPR and other European laws. This website get automatically updated with the latest vendorlist every week.
+    </p>
+    <p>
+      Click on bars to display vendors!<br />
+      Click on vendors names to display full information!<br />
+    </p>
+    <p>
+      Author: <a href="https://cmatte.me">Célestin Matte</a><br />
+      Code: <a href="https://github.com/Perdu/vendorlistexplorer">github</a>
+    </p>
+    </div>
     <canvas id="container" height="150px"></canvas>
     <div id="other_containers">
       <canvas id="container2" width="600px"></canvas>
@@ -386,10 +399,6 @@
           });
       }
     </script>
-    <br />
-    Click on bars to display vendors!<br />
-    Click on vendors names to display full information!<br />
-    This website get automatically updated with latest vendorlists.
     <div id="vendor_div">
     </div>
     <table id="vendors_table">
