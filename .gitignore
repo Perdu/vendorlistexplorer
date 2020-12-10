@@ -2,3 +2,4 @@ config.conf
 iabsite.wsgi
 __pycache__/
 TAGS
+vendorlists/
