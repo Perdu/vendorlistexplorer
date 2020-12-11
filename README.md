@@ -47,6 +47,11 @@ You can also download vendorlists manually (they're all stored on the following 
 python import_vendorlist.py vendor-list-vVERSION.json
 ```
 
+If you want to download older vendorlists, this is pretty straightforward since they all remain on IAB's server:
+```bash
+for i in $(seq 1 68) ; do wget -O vendorlistv2_"$i".json https://vendorlist.consensu.org/v2/archives/vendor-list-v"$i".json ; done
+```
+
 ### Web application
 - run `iabsite.py`:
 ```bash
