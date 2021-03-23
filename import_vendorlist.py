@@ -39,9 +39,9 @@ if __name__ == "__main__":
         vendor_t = Vendor((int(vendor["id"])), vendorlist_id)
         vendor_t.name = html.escape(vendor["name"].replace('&amp;', '&').replace('&#43;', '+')) # only allow '&' and '+' replacements, escape the rest
         vendor_t.url = html.escape(vendor["policyUrl"])
-        if "cookieMaxAgeSeconds" in vendor:
+        if "cookieMaxAgeSeconds" in vendor and vendor["cookieMaxAgeSeconds"] is not None:
             vendor_t.cookieMaxAgeSeconds = int(vendor["cookieMaxAgeSeconds"])
-        if "usesNonCookieAccess" in vendor:
+        if "usesNonCookieAccess" in vendor and vendor["usesNonCookieAccess"] is not None:
             vendor_t.usesNonCookieAccess = int(vendor["usesNonCookieAccess"])
         db.add(vendor_t)
         db.commit()
