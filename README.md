@@ -42,14 +42,14 @@ The database tables will be created automatically when the first vendorlist is i
 45 17 * * 4 /path/to/vendorlistexplorer/download_import_vendorlists.sh
 ```
 
-You can also download vendorlists manually (they're all stored on the following address: https://vendorlist.consensu.org/v2/archives/vendor-list-vVERSION.json where VERSION is the version number). Then import them using:
+You can also download vendorlists manually (they're all stored on the following address: https://vendor-list.consensu.org/v2/archives/vendor-list-vVERSION.json where VERSION is the version number). Then import them using:
 ```bash
 python import_vendorlist.py vendor-list-vVERSION.json
 ```
 
 If you want to download older vendorlists, this is pretty straightforward since they all remain on IAB's server:
 ```bash
-for i in $(seq 1 68) ; do wget -O vendorlistv2_"$i".json https://vendorlist.consensu.org/v2/archives/vendor-list-v"$i".json ; done
+for i in $(seq 1 68) ; do wget -O vendorlistv2_"$i".json https://vendor-list.consensu.org/v2/archives/vendor-list-v"$i".json ; done
 ```
 
 ### Web application
