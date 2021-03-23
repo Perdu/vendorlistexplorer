@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function download_vl() {
-    wget -O vendorlists/vendorlistv2_"$1".json https://vendorlist.consensu.org/v2/archives/vendor-list-v"$1".json
+    wget -O vendorlists/vendorlistv2_"$1".json https://vendor-list.consensu.org/v2/archives/vendor-list-v"$1".json
     return $?
 }
 
