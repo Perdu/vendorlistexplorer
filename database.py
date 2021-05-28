@@ -20,7 +20,7 @@ def start_db_orm():
     config = parse_config_file(CONFIG_FILE)
     eng = create_engine('mysql://' + config.db_user + ':' +
                         config.db_pass + '@' + config.db_server +
-                        '/' + config.db_name, pool_recycle=3600)
+                        '/' + config.db_name + '?charset=utf8mb4', pool_recycle=3600)
     Base.metadata.bind = eng
     Session = sessionmaker(bind=eng)
     db = Session()
