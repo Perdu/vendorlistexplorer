@@ -12,5 +12,4 @@ COPY docker/* /app/
 COPY iabsite.py main.py
 COPY config.conf.docker config.conf
 
-# CMD ["bash", "prestart.sh"]
 CMD ["flask", "run"]
