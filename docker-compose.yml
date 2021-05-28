@@ -11,11 +11,12 @@ services:
             - MARIADB_RANDOM_ROOT_PASSWORD=1
         volumes:
             - ./db/data:/var/lib/mysql
+            - ./docker/utf8.cnf:/etc/mysql/conf.d/utf8.cnf
         networks:
             - back-tier
         ports:
             - 3307:3306
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     flask:
         build: .
         restart: always
