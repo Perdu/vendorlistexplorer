@@ -6,7 +6,7 @@ services:
         restart: always
         environment:
             - MARIADB_DATABASE=vendorlistexplorer
-            - MARIADB_PASSWORD=CHANGEME
+            - MARIADB_PASSWORD=${MARIADB_PASSWORD}
             - MARIADB_USER=vendorlistexplorer
             - MARIADB_RANDOM_ROOT_PASSWORD=1
         volumes:
