@@ -3,3 +3,4 @@ iabsite.wsgi
 __pycache__/
 TAGS
 vendorlists/
+db/
