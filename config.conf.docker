@@ -1,0 +1,11 @@
+[Database]
+db_name = vendorlistexplorer
+db_server = db
+db_user = vendorlistexplorer
+db_pass = CHANGEME
+
+[Other]
+is_debug_activated = False
+# set to 0.0.0.0 to make the app reachable from the internet
+#host = 127.0.0.1
+host = 0.0.0.0

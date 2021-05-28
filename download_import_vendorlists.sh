@@ -38,3 +38,4 @@ else
     # download vendorlist given in argument
     download_and_add "$1"
 fi
+exit 0
