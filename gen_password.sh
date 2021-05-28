@@ -9,6 +9,7 @@ MARIADB_PASSWORD=$(gen_pass)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR"
 
+cp config.conf.docker.example config.conf.docker
 sed -i "s/db_pass\s*=\s*.*/db_pass = ${MARIADB_PASSWORD}/" config.conf.docker
 
 ans=$(test -f .env && grep MARIADB_PASSWORD .env)
