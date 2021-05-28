@@ -24,8 +24,17 @@ This repository contains:
 
 ## Install
 
+### Simple install (Docker)
 
-### Database
+```bash
+./gen_password.sh
+sudo docker-compose up --build
+```
+All vendorlists will be automatically downloaded and added to the database (this will take a while). Once this is done, application is reachable on http://localhost
+
+### Manual install
+
+#### Database
 
 Create a database, create database user and give it access right to the `iabsite` catabase:
 ```sql
@@ -35,7 +44,7 @@ GRANT ALL ON iabsite.* TO '<user>'@localhost;
 ```
 The database tables will be created automatically when the first vendorlist is imported.
 
-### Vendorlists downloading
+#### Vendorlists downloading
 - fill `config.conf.example` and rename it `config.conf`
 - In your crontab, add a line to execute `download_import_vendorlists.sh` every week:
 ```
@@ -52,7 +61,7 @@ If you want to download older vendorlists, this is pretty straightforward since 
 for i in $(seq 1 68) ; do wget -O vendorlistv2_"$i".json https://vendor-list.consensu.org/v2/archives/vendor-list-v"$i".json ; done
 ```
 
-### Web application
+#### Web application
 - run `iabsite.py`:
 ```bash
 python iabsite.py
