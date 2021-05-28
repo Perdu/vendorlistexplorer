@@ -1,4 +1,5 @@
 config.conf
+.env
 iabsite.wsgi
 __pycache__/
 TAGS
