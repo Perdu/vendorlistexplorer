@@ -27,7 +27,7 @@ services:
             - 'RUN=flask run --host=0.0.0.0 --port=80'
         volumes:
             - ./vendorlists:/app/vendorlists
-        command: sh -c './wait-for db:3306 -- bash download_import_vendorlists.sh && flask run --host=0.0.0.0 --port=80'
+        command: sh -c './wait-for db:3306 -- bash download_import_vendorlists.sh && /start.sh'
         networks:
             - back-tier
 
