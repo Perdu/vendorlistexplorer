@@ -7,9 +7,10 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
 
-COPY . /app
+COPY download_import_vendorlists.sh /app/
 COPY docker/* /app/
-COPY iabsite.py main.py
+COPY static/ /app/static/
+COPY templates/ /app/templates/
+COPY *.py /app/
 COPY config.conf.docker config.conf
-
-CMD ["flask", "run"]
+RUN mv iabsite.py main.py
