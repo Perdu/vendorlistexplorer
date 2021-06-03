@@ -14,3 +14,4 @@ COPY templates/ /app/templates/
 COPY *.py /app/
 COPY config.conf.docker config.conf
 RUN mv iabsite.py main.py
+RUN chown -R nginx:root /app/
