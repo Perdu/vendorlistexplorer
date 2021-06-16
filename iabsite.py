@@ -107,6 +107,10 @@ def get_latest_vendorlist():
     row = execute("SELECT MAX(id) FROM vendorlist")
     return int(row[0])
 
+def vendorlist_exists(vendorlist_id):
+    nb_res = execute("SELECT id FROM vendorlist WHERE id = %d" % vendorlist_id, return_rowcount=True)
+    return (nb_res == 1)
+
 def get_max_vendorid():
     row = execute("SELECT MAX(id) FROM vendor")
     return int(row[0])
@@ -155,7 +159,7 @@ def disp_vendorlist():
     vendorlist_id = get_int_param('id', max_val=latest_vendor_list, default_val=latest_vendor_list)
     if vendorlist_id == -1:
         return error()
-    if vendorlist_id is None:
+    if vendorlist_id is None or not vendorlist_exists(vendorlist_id):
         vendorlist_id = latest_vendor_list
     purpose_series = get_series(vendorlist_id, "consent")
     legint_series = get_series(vendorlist_id, "legint")
