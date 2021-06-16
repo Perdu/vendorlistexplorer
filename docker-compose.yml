@@ -12,8 +12,6 @@ services:
         volumes:
             - ./db/data:/var/lib/mysql
             - ./docker/utf8.cnf:/etc/mysql/conf.d/utf8.cnf
-        networks:
-            - back-tier
         ports:
             - 3307:3306
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -28,8 +26,4 @@ services:
         volumes:
             - ./vendorlists:/app/vendorlists
         command: sh -c './wait-for db:3306 -- bash download_import_vendorlists.sh && crond && /start.sh'
-        networks:
-            - back-tier
 
-networks:
-  back-tier:
