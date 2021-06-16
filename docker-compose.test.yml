@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  flask:
+    extends:
+      file: docker-compose.yml
+      service: flask
+  db:
+    extends:
+      file: docker-compose.yml
+      service: db
+  test:
+    build: .
+    volumes:
+           - ./tests:/tests/:ro
+    command: sh -c './wait-for flask:80 -- sleep 3 && /tests/integration.sh http://flask/'
+    depends_on:
+      - flask
