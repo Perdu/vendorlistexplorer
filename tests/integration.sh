@@ -1,5 +1,7 @@
 #!/bin/bash
 
+all_ok=0
+
 if [ $# -gt 0 ]
 then
     target="$1"
@@ -14,6 +16,7 @@ function run() {
     if [ $? -ne 0 ]
     then
         echo "*** Test failed: grep $keyword on page $address"
+        all_ok=1
     fi
 }
 
@@ -46,3 +49,5 @@ run "/vendors?vendorlistid=60&consentpurposeid=8&categ=-1" "Error"
 run "/vendors?vendorlistid=60&consentpurposeid=8&categ=sdfkljsd" "Error"
 run "/vendors?vendorlistid=60&consentpurposeid=8&categ=9000" "Error"
 run "/vendors?vendorlistid=60&consentpurposeid=8" "Error"
+
+exit $all_ok
