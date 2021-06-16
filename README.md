@@ -75,7 +75,7 @@ See also an example VirtualHost config file for apache in `apache_example_config
 
 ## Tests
 
-On local install:
+On local install, with the application running:
 ```bash
 tests/integration.sh
 ```
