@@ -90,7 +90,10 @@ def get_vendor(vendorlist_id, vendor_id):
     row = execute(query)
     vendor["name"] = row[0]
     vendor["url"] = row[1]
-    vendor["cookieMaxAgeSeconds"] = int(row[2])
+    if row[2] == None:
+        vendor["cookieMaxAgeSeconds"] = "?"
+    else:
+        vendor["cookieMaxAgeSeconds"] = int(row[2])
     vendor["usesNonCookieAccess"] = int(row[3])
     add_purpose_to_vendor_dict(vendor, "purpose", vendorlist_id, vendor_id)
     add_purpose_to_vendor_dict(vendor, "legint", vendorlist_id, vendor_id)

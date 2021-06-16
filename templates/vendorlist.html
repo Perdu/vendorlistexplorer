@@ -304,6 +304,9 @@
                   ans.forEach(function(item, index) {
                       link = encodeURI(item[1]);
                       cookieMaxAge = encodeURI(item[2]);
+                      if (cookieMaxAge == "null") {
+                          cookieMaxAge = '?';
+                      }
                       usesNonCookieAccess = item[3] == 1 ? 'yes' : 'no';
                       vendor_link = '<a href="#vendor_div" onclick="disp_vendor(' + item[4] + ')">' + item[0] + '</a>';
                       $("#vendors_table").append($('<tr>')
