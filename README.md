@@ -72,3 +72,15 @@ If you want it to run inside apache2:
 - fill `iabsite.wsgi.example` and rename it `iabsite.wsgi`
 - follow these instructions: https://flask.palletsprojects.com/en/1.1.x/deploying/mod_wsgi/
 See also an example VirtualHost config file for apache in `apache_example_config.conf`.
+
+## Tests
+
+On local install:
+```bash
+tests/integration.sh
+```
+
+Using Docker:
+```bash
+sudo sudo ./regtest_docker.sh
+```
