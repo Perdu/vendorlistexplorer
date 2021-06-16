@@ -82,5 +82,5 @@ tests/integration.sh
 
 Using Docker:
 ```bash
-sudo sudo ./regtest_docker.sh
+sudo ./regtest_docker.sh
 ```
