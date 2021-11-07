@@ -1,6 +1,6 @@
 # Vendorlist explorer
 
-A Flask application to run the Vendorlist explorer. See live version here: https://vendorlistexplorer.site.
+A Flask application to run the Vendorlist explorer. See live version [here](https://vendorlistexplorer.ploudseeker.com).
 
 This website extracts information from the vendorlist of IAB Europe Transparency & Consent Framework and makes this information human-readable. The goal is to provide Data Protection Agencies, privacy researchers and activists a tool to easily get statistics on purpose declarations by advertisers and their legal basis, and obtain lists of vendor in potentiel violation of the GDPR and other European laws. This website get automatically updated with the latest vendorlist every week.
 
